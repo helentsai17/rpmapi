@@ -2,19 +2,19 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('speeds', {
+    await queryInterface.createTable('nonins', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-      machineId: {
-        type: DataTypes.STRING
+      heart_rate: {
+        type: DataTypes.INTEGER
       },
-      rpm: {
-        type: DataTypes.DECIMAL(10,2)
-      }, 
+      spo2: {
+        type: DataTypes.INTEGER
+      },
       time: {
         type: DataTypes.DATE
       },
@@ -29,6 +29,6 @@ module.exports = {
     });
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable('speeds');
+    await queryInterface.dropTable('nonins');
   }
 };

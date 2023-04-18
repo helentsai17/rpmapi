@@ -1,6 +1,6 @@
 const express = require('express')
 
-const {sequelize, Speed} = require('./models')
+const {sequelize, Speed, Nonin} = require('./models')
 
 const app = express()
 app.use(express.json())
@@ -28,6 +28,33 @@ app.get( '/rpm' ,async (req, res) =>{
     }catch(err){
         console.log(err)
         return res.status(500).json({error: 'Something went wrong'})
+    }
+})
+
+app.post('/nonin', async(req, res) =>{
+    const { heart_rate, spo2, time } = req.body
+
+    try{
+        const noninvalue =  await Nonin.create({heart_rate, spo2, time})
+
+        return res.json(noninvalue)
+    }catch(err){
+        console.log(err)
+        return res.status(500).json(err)
+    }
+})
+
+
+app.get( '/nonin' ,async (req, res) =>{
+    try{
+        const latest = await Nonin.findOne({
+            order: [ [ 'id', 'DESC' ]],
+            });
+        return res.json(latest)
+
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({error: 'Something went wrong from the nonin data'})
     }
 })
 
