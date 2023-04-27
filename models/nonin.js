@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Nonin.init({
+    machineId: {
+      type: DataTypes.STRING
+    },
     heart_rate: {
       type: DataTypes.INTEGER,
       allowNull:false

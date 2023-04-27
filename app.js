@@ -1,6 +1,6 @@
 const express = require('express')
 
-const {sequelize, Speed, Nonin} = require('./models')
+const {sequelize, Speed, Nonin, Exercise} = require('./models')
 
 const app = express()
 app.use(express.json())
@@ -31,11 +31,26 @@ app.get( '/rpm' ,async (req, res) =>{
     }
 })
 
+app.get( '/rpm/:id' ,async (req, res) =>{
+    const machineId = req.params.id
+    try{
+        const latest = await Speed.findOne({
+            where:{ machineId : machineId },
+            order: [ [ 'id', 'DESC' ]],
+            });
+        return res.json(latest.rpm)
+
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({error: 'Something went wrong'})
+    }
+})
+
 app.post('/nonin', async(req, res) =>{
-    const { heart_rate, spo2, time } = req.body
+    const { machineId, heart_rate, spo2, time } = req.body
 
     try{
-        const noninvalue =  await Nonin.create({heart_rate, spo2, time})
+        const noninvalue =  await Nonin.create({machineId, heart_rate, spo2, time})
 
         return res.json(noninvalue)
     }catch(err){
@@ -58,23 +73,11 @@ app.get( '/nonin' ,async (req, res) =>{
     }
 })
 
-app.post('/userExercise', async(req, res) =>{
-    const { heart_rate, spo2, time } = req.body
-
-    try{
-        const noninvalue =  await Nonin.create({heart_rate, spo2, time})
-
-        return res.json(noninvalue)
-    }catch(err){
-        console.log(err)
-        return res.status(500).json(err)
-    }
-})
-
-
-app.get( '/userExercise' ,async (req, res) =>{
+app.get( '/nonin/:id' ,async (req, res) =>{
+    const machineId = req.params.id
     try{
         const latest = await Nonin.findOne({
+            where:{machineId : machineId},
             order: [ [ 'id', 'DESC' ]],
             });
         return res.json(latest)
@@ -82,6 +85,63 @@ app.get( '/userExercise' ,async (req, res) =>{
     }catch(err){
         console.log(err)
         return res.status(500).json({error: 'Something went wrong from the nonin data'})
+    }
+})
+
+app.post('/exercise', async(req, res) =>{
+    const { userId, machineId, data, survey_data } = req.body
+
+    try{
+        const ExerciseDataSet =  await Exercise.create({ userId, machineId, data, survey_data})
+
+        return res.json(ExerciseDataSet)
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({error: 'Something went wrong from pushing the Ecercise data'})
+    }
+})
+
+
+app.get( '/exercise' ,async (req, res) =>{
+    try{
+        const latest = await Exercise.findOne({
+            order: [ [ 'id', 'DESC' ]],
+            });
+        return res.json(latest)
+
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({error: 'Something went wrong from geting the Ecercise data'})
+    }
+})
+
+app.get( '/exercise/:id' ,async (req, res) =>{
+    const machineId = req.params.id
+    try{
+        const latest = await Exercise.findOne({
+            where:{machineId : machineId},
+            order: [ [ 'id', 'DESC' ]],
+            });
+        return res.json(latest)
+
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({error: 'Something went wrong from geting the Exercise data by id'})
+    }
+})
+
+
+app.get( '/userExercise/:id' ,async (req, res) =>{
+    const userId = req.params.id
+    try{
+        const latest = await Exercise.findAll({
+            where:{userId : userId}
+            });
+        return res.json(latest)
+
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({error: 'Something went wrong from geting user Exercise data'})
     }
 })
 

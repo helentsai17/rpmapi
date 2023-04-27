@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    machineId: {
+      type: DataTypes.STRING
+    },
     data: {
       type: DataTypes.JSON,
       allowNull: false

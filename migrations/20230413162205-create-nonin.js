@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
+      machineId: {
+        type: DataTypes.STRING
+      },
       heart_rate: {
         type: DataTypes.INTEGER
       },
