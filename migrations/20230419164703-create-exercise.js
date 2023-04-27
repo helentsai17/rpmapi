@@ -2,24 +2,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('speeds', {
+    await queryInterface.createTable('exercises', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-      machineId: {
-        type: DataTypes.STRING
+      userId: {
+        type: DataTypes.STRING,
+        allowNull: false
       },
-      rpm: {
-        type: DataTypes.INTEGER
+      data: {
+        type: DataTypes.JSON,
+        allowNull: false
       },
-      speed: {
-        type: DataTypes.DECIMAL(10,2)
-      }, 
-      time: {
-        type: DataTypes.DATE
+      survey_data: {
+        type: DataTypes.JSON
       },
       createdAt: {
         allowNull: false,
@@ -32,6 +31,6 @@ module.exports = {
     });
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable('speeds');
+    await queryInterface.dropTable('exercises');
   }
 };
